@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>MSDT — Municipal Service Delivery Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+  <style>
+    body { background: #08060A; color: #dbeafe; font-family: Inter, Arial, sans-serif; padding: 28px; }
+    .header { display:flex; align-items:center; gap:16px; margin-bottom:20px; }
+    .logo { height:72px; }
+    .card { background: linear-gradient(135deg, rgba(58,0,255,0.06), rgba(0,224,255,0.02)); padding:12px; border-radius:8px; border:1px solid rgba(138,44,255,0.12); margin-bottom:10px; }
+    .hash { word-break:break-all; color:#a8fff7; }
+    .muted { color:#8b88a8; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script>
+    const { ethers } = window.ethers;
+    const CONTRACT_ADDRESS = "0x8A32770bca516b98804D9CD17999535167a975Dc";
+    const CONTRACT_ABI = [
+      "event Anchored(uint256 indexed id, string hash, uint256 timestamp, string eventType, address reporter)"
+    ];
+    
+
+    function App() {
+      const [events, setEvents] = React.useState([]);
+      React.useEffect(() => {
+        const provider = window.ethereum ? new ethers.providers.Web3Provider(window.ethereum) : new ethers.providers.InfuraProvider("sepolia");
+        const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
+
+        const onEvent = (id, hash, timestamp, eventType, reporter) => {
+          const ev = { id: id.toString(), hash, timestamp: Number(timestamp), eventType, reporter };
+          setEvents(prev => [ev, ...prev]);
+        };
+
+        contract.on("Anchored", onEvent);
+
+        (async function fetchPast(){
+          try {
+            const block = await provider.getBlockNumber();
+            const fromBlock = Math.max(0, block-5000);
+            const filter = contract.filters.Anchored();
+            const logs = await contract.queryFilter(filter, fromBlock, block);
+            const parsed = logs.map(l => ({ id: l.args.id.toString(), hash: l.args.hash, timestamp: Number(l.args.timestamp), eventType: l.args.eventType, reporter: l.args.reporter })).reverse();
+            setEvents(parsed);
+          } catch(e){ console.error(e) }
+        })();
+
+        return () => contract.removeAllListeners("Anchored");
+      }, []);
+
+      return React.createElement('div', null,
+        React.createElement('div', {className:'header'}, 
+          React.createElement('img', { src: '/mnt/data/A_digital_graphic_showcases_the_logo_and_title_for.png', className:'logo', alt:'MSDT logo'}),
+          React.createElement('div', null, React.createElement('h1', null, 'MSDT — Municipal Service Delivery Tracker'), React.createElement('div', {className:'muted'}, 'AI + Blockchain Audit'))
+        ),
+        events.length === 0 ? React.createElement('div', {className:'card'}, 'No anchored events yet.') : events.map((ev, i) => React.createElement('div', {key:i, className:'card'},
+            React.createElement('div', null, React.createElement('strong', null, 'ID:'), ' ', ev.id),
+            React.createElement('div', {className:'hash'}, React.createElement('strong', null, 'Hash:'), ' ', ev.hash),
+            React.createElement('div', null, React.createElement('strong', null, 'Event:'), ' ', ev.eventType),
+            React.createElement('div', null, React.createElement('strong', null, 'Time:'), ' ', new Date(ev.timestamp*1000).toLocaleString()),
+            React.createElement('div', null, React.createElement('strong', null, 'Reporter:'), ' ', ev.reporter)
+        ))
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+  </script>
+</body>
+</html>

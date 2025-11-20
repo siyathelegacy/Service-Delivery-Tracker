@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Reports</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>All Student Reports</h1>
+    <button id="connectWalletBtn">Connect Wallet</button>
+  </header>
+
+  <main>
+    <section id="reportsList">
+      <h2>Reports</h2>
+      <ul id="reportsUl"></ul>
+    </section>
+
+    <section id="reportDetails" style="display:none;">
+      <h2>Report Details</h2>
+      <p><strong>Type:</strong> <span id="detailType"></span></p>
+      <p><strong>Description:</strong> <span id="detailDescription"></span></p>
+      <p><strong>AI Response:</strong> <span id="aiResponse"></span></p>
+      <p><strong>Blockchain Hash:</strong> <span id="reportHash"></span></p>
+      <button id="backBtn">Back</button>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Service Reports</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Student Service Reporting</h1>
+    <button id="connectWalletBtn">Connect Wallet</button>
+    <a href="event_viewer.html" target="_blank">Live Blockchain Dashboard</a>
+
+  </header>
+
+  <main>
+    <section id="reportForm">
+      <h2>Submit a Problem</h2>
+      <form id="createReportForm">
+        <label for="type">Issue Type:</label>
+        <select id="type" required>
+          <option value="water">Water</option>
+          <option value="electricity">Electricity</option>
+          <option value="safety">Safety</option>
+          <option value="transport">Transport</option>
+        </select>
+
+        <label for="description">Description:</label>
+        <textarea id="description" rows="4" required></textarea>
+
+        <button type="submit">Submit Report</button>
+      </form>
+      <p id="reportStatus"></p>
+    </section>
+
+    <section id="reportStats">
+      <h2>Total Reports: <span id="totalReports">0</span></h2>
+    </section>
+
+    <section>
+      <a href="reports.html">View All Reports</a>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

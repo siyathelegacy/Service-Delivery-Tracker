@@ -1,0 +1,351 @@
+{
+	"compiler": {
+		"version": "0.8.28+commit.7893614a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "payable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "AlreadyAgent",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "AlreadyAnchored",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "NotAdmin",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "NotAgent",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "NotAnAgent",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "ZeroAddress",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "ZeroHash",
+				"type": "error"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "oldAdmin",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newAdmin",
+						"type": "address"
+					}
+				],
+				"name": "AdminTransferred",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "agent",
+						"type": "address"
+					}
+				],
+				"name": "AgentAdded",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "agent",
+						"type": "address"
+					}
+				],
+				"name": "AgentRemoved",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "bytes32",
+						"name": "hash",
+						"type": "bytes32"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "eventType",
+						"type": "string"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "reporter",
+						"type": "address"
+					}
+				],
+				"name": "Anchored",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "agent",
+						"type": "address"
+					}
+				],
+				"name": "addAgent",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "admin",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "hash",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "string",
+						"name": "eventType",
+						"type": "string"
+					}
+				],
+				"name": "anchorReport",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"name": "anchoredAt",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "isAgent",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "hash",
+						"type": "bytes32"
+					}
+				],
+				"name": "isAnchored",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "agent",
+						"type": "address"
+					}
+				],
+				"name": "removeAgent",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newAdmin",
+						"type": "address"
+					}
+				],
+				"name": "transferAdmin",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"details": "Features: - Admin + agent role model - Prevents duplicate anchors (hash -> timestamp) - Emits Anchored events for audit logsNotes: - Deployer/admin should be a multisig on mainnet. - Event-based architecture reduces storage costs.",
+			"kind": "dev",
+			"methods": {
+				"addAgent(address)": {
+					"params": {
+						"agent": "Address of the new agent."
+					}
+				},
+				"anchorReport(uint256,bytes32,string)": {
+					"details": "Prevents duplicate anchors and emits an event for auditing.",
+					"params": {
+						"eventType": "Type of event (e.g., \"Water\", \"Electricity\").",
+						"hash": "Keccak256 hash of the report data.",
+						"id": "Unique identifier for the report."
+					}
+				},
+				"isAnchored(bytes32)": {
+					"params": {
+						"hash": "Keccak256 hash to check."
+					},
+					"returns": {
+						"_0": "True if anchored, false otherwise."
+					}
+				},
+				"removeAgent(address)": {
+					"params": {
+						"agent": "Address of the agent to remove."
+					}
+				},
+				"transferAdmin(address)": {
+					"params": {
+						"newAdmin": "Address of the new admin."
+					}
+				}
+			},
+			"title": "ServiceDeliveryTracker",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"addAgent(address)": {
+					"notice": "Add a new agent (authorized reporter)."
+				},
+				"anchorReport(uint256,bytes32,string)": {
+					"notice": "Anchor a service report hash to the blockchain."
+				},
+				"isAnchored(bytes32)": {
+					"notice": "Check if a hash has been anchored."
+				},
+				"removeAgent(address)": {
+					"notice": "Remove an agent."
+				},
+				"transferAdmin(address)": {
+					"notice": "Transfer admin rights to a new address."
+				}
+			},
+			"notice": "Secure contract for anchoring municipal service reports.",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/ServiceDeliveryTracker.sol": "ServiceDeliveryTracker"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/ServiceDeliveryTracker.sol": {
+			"keccak256": "0xffd12720a64e9ab70995d589d892953ab1b1971edf0595bb469b65f1d5a0465e",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0cde50cc0ecf7bd6acec7d5f741efdc2b6da83260899aeb2a111b684146d5c97",
+				"dweb:/ipfs/QmbbaWxSPMLoGGzZ23zE7jBhm8EhxBfsGne2xHtup4iP5v"
+			]
+		}
+	},
+	"version": 1
+}
